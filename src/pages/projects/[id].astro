@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProject, getProjects } from '../../services/graphql';
+
+// export const prerender = false // server
+
+export const getStaticPaths = async () => {
+  const {nodes: projects} = await getProjects()
+  
+  return projects.map((project) => ({
+    params: {id: project.id},
+    props: {project}
+  }))
+};
+
+
+const {id} = Astro.params
+let project;
+if(id) {
+  project = await getProject(id)
+}
+
+---
+<BaseLayout pageTitle={project?.title}>
+  <span>Estimado para: {project?.fecha}</span>
+  <article class="flex gap-y-4 flex-col justify-center items-center">
+    <p>Empresas asignadas:</p>
+    <div class="tags">
+      {project?.empresas.nodes.map((empresa) => (
+        <p class="tag">{empresa.name}</p>
+      ))}  
+    </div>
+
+    <p>Para más informacion, visite <a href={project?.link}>{project?.link}</a></p>
+  </article>
+</BaseLayout>
+
+
+<style>
+
+  span {
+    font-size: 0.9em;
+    color: #a1a1a1;
+  }
+
+  a {
+    color: #00539F;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    margin: 0.25em;
+    border: dotted 1px #a1a1a1;
+    border-radius: .5em;
+    padding: .5em 1em;
+    font-size: 1.15em;
+    background-color: #F8FCFD;
+  }
+
+  .tag:hover {
+    background-color: #F0F8FF;
+  }
+
+</style>

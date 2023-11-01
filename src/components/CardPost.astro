@@ -1,0 +1,21 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  date: string;
+}
+
+const { id, title, date } = Astro.props
+const readableDateString = new Date(date).toLocaleDateString('es-UY', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+})
+---
+
+<a href={`/posts/${id}`} class="rounded-lg border shadow-md bg-gray-800 border-gray-700 hover:scale-105 hover:bg-gray-700 hover:border-gray-50 transition flex flex-col">
+  <header class="p-4 flex-grow">
+    <h2 class="my-2 text-2xl font-bold tracking-tight text-white">{title}</h2>
+    <p class="mb-4 font-light text-gray-400">Fecha: {readableDateString}</p>
+  </header>
+</a>

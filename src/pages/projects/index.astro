@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CardProject from '../../components/CardProject.astro';
+import { getProjects } from '../../services/graphql';
+
+const pageTitle = "Todos los Proyectos";
+
+const {nodes: projects} = await getProjects();
+
+---
+<BaseLayout pageTitle={pageTitle}>
+  <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      projects.map(project => (
+        <CardProject 
+          id={project.id}  
+          title={project.title}  
+          empresas={project.empresas}  
+        />
+      ))
+    }
+  </div>
+</BaseLayout>

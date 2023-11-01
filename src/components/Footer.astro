@@ -5,12 +5,21 @@ import Social from './Social.astro';
 <style>
   footer {
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 1rem;
     margin-top: 2rem;
+  }
+
+  footer span {
+    color: #4c1d95;
+    font-size: 0.8rem;
+    font-weight: 600;
   }
 </style>
 
 <footer>
+  <span>Sigueme en mis redes sociales</span>
   <Social platform="github" username="kitorosano" />
   <Social platform="instagram" username="kebu_rosano" />
 </footer>

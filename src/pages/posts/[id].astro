@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPost, getPosts } from '../../services/graphql';
+
+// export const prerender = false // server
+
+export const getStaticPaths = async () => {
+  const {nodes: posts} = await getPosts()
+  
+  return posts.map((post) => ({
+    params: {id: post.id},
+    props: {post}
+  }))
+};
+
+const {id} = Astro.params
+let post;
+if(id) {
+  post = await getPost(id)
+}
+
+---
+<BaseLayout pageTitle={post?.title}>
+  <article class="flex gap-y-4 flex-col justify-center items-center">
+    {
+      post?.featuredImage?.node?.sourceUrl && (
+        <img class="w-64 h-auto" src={post?.featuredImage?.node?.sourceUrl} alt={"Imagen del post"}>
+      )
+    }
+    <p set:html={post?.content} />
+  </article>
+</BaseLayout>

@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CardPost from '../../components/CardPost.astro';
+import { getPosts } from '../../services/graphql';
+
+const pageTitle = "Todos los Posts";
+
+const {nodes: posts} = await getPosts();
+
+---
+<BaseLayout pageTitle={pageTitle}>
+  <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      posts.map(post => (
+        <CardPost 
+          id={post.id}  
+          title={post.title}  
+          date={post.date}  
+        />
+      ))
+    }
+  </div>
+</BaseLayout>
